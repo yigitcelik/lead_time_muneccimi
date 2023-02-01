@@ -23,7 +23,7 @@ pd.set_option('display.width', 1000)
 
 data_list= glob('../../data/interim/*') 
 
-data =  pd.read_pickle(data_list[0])
+data =  pd.read_pickle(data_list[0]) #tumveri_transformed.pickle
 
 def tell_data(data):
     dataset.explore_df(data)

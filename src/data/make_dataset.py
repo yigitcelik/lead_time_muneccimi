@@ -6,7 +6,7 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 data_list = glob('../../data/raw/*') #raw data klasorundeki tum dosyalarin adreslerini kaydeder
-
+#okunan dosya '../../data/raw/tum_data_v2.xlsx'
 class dataset:
     
 
