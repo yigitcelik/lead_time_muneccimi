@@ -1,0 +1,6 @@
+,method,score,size
+0,LocalOutlierFactor()_outlier,638.1083837851678,20646
+1,OneClassSVM()_outlier,67.68479082516944,10780
+2,IsolationForest()_outlier,481.73408844040006,20606
+3,EllipticEnvelope()_outlier,703.2643428017773,19405
+4,No Method_outlier,1046.5175364168338,21562

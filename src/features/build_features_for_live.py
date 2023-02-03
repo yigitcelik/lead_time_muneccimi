@@ -34,21 +34,7 @@ def set_cat(x,col):
 for col in card_col["name"].values:
     data[col]=data[col].apply(set_cat,args=[col])
 
-def make_class(target):
-    """aldiği kolondaki(pandas Series) verileri verilen bin değerlerine göre
-    sınıflandırır.
 
-    Args:
-        target (Series): Pandas Series, sınıflandırılması istenen
-        kolon.
-
-    Returns:
-        Series: Sınıflandırdığı verileri içeren pandas series.
-    """
-    bins=[0,7,14,25,50,50000]
-    return pd.cut(target,bins=[0,7,14,25,50,2000],labels=[1,2,3,4,5])
-
-data['gun_sayisi_class'] = make_class(data['gun_sayisi'])
 
 data.to_pickle('../../data/processed/data_processed_not_encoded_for_live.pickle')
 
