@@ -219,6 +219,6 @@ report_df = pd.DataFrame(report).transpose()
 cm =confusion_matrix(y_true=plot_df["Gercek sınıf"],y_pred=plot_df["Tahmin sınıf"],labels=["erken","orta","gec"])
 
 sns.heatmap(report_df.iloc[:, :-1], annot=True)
-plt.savefig("../../reports/figures/gradientboosting_classreport.png")
+plt.savefig("../../reports/figures/gradientboosting_classreport0-15-30.png")
 
 pickle.dump(model, open('../../models/gradientboosting(mae 9.7).pkl', 'wb'))
