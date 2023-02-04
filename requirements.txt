@@ -14,6 +14,5 @@ seaborn==0.11.2
 setuptools==66.0.0
 streamlit==1.14.0
 tensorflow==2.11.0
-tensorflow_macos==2.9.2
 tqdm==4.64.1
 xgboost==1.5.0
