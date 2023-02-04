@@ -10,7 +10,7 @@ not encoded ve one hot encoded olarak 2 pickle dosyası oluşturur.
 """
 
 
-data = pd.read_pickle('../../data/interim/tumveri_transformed.pickle')
+data = pd.read_pickle('../../data/interim/livedata_transformed.pickle')
 
 card_col= pd.read_pickle("../../data/processed/highcardinal_columns.pickle")
 
