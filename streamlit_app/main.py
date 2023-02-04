@@ -14,17 +14,26 @@ col1,col2,col3 = st.columns(3)
 wo_input = col1.text_input(label='Is emri No (coklu girdi yapilabilir) :')
 
 
+uploaded_file = col1.file_uploader("Girdi dosyasini excel yukle", type=["xlsx", "xls"])
+
+
 if st.button("Tahmin Yap"):
-    try:
-        assert wo_input!=""
+    if wo_input!="":
         wo_list = wo_input.split(' ')
         df = create_sap_data.create(wo_list)
         with st.spinner("SAP'den veri cekiliyor lutfen bekleyiniz"):
             time.sleep(2)
         st.success('Veri Cekimi ve tahminleme tamamlandi')
         st.write(get_data.get_predict(df))
-    except:
-        st.error("Veri cekiminde/tahminlemede hata alindi")
+    if uploaded_file is not None:
+        wo_list = wo_input.split(' ')
+        df = pd.read_excel(uploaded_file)
+        with st.spinner("SAP'den veri cekiliyor lutfen bekleyiniz"):
+            time.sleep(2)
+        st.success('Veri Cekimi ve tahminleme tamamlandi')
+        st.write(get_data.get_predict(df))
+        
+
         
 
 
