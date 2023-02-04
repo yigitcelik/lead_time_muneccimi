@@ -23,15 +23,17 @@ if st.button("Tahmin Yap"):
         df = create_sap_data.create(wo_list)
         with st.spinner("SAP'den veri cekiliyor lutfen bekleyiniz"):
             time.sleep(2)
-        st.success('Veri Cekimi ve tahminleme tamamlandi')
+        col1.success('Veri Cekimi ve tahminleme tamamlandi')
         st.write(get_data.get_predict(df))
-    if uploaded_file is not None:
+    elif uploaded_file is not None:
         wo_list = wo_input.split(' ')
         df = pd.read_excel(uploaded_file)
         with st.spinner("SAP'den veri cekiliyor lutfen bekleyiniz"):
             time.sleep(2)
-        st.success('Veri Cekimi ve tahminleme tamamlandi')
+        col1.success('Veri Cekimi ve tahminleme tamamlandi')
         st.write(get_data.get_predict(df))
+    else:
+        col1.error("Girdi verilmedi !!!")
         
 
         
