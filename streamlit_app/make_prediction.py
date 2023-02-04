@@ -27,7 +27,7 @@ class get_data():
             pass
 
         #build features
-        card_col= pd.read_pickle("highcardinal_columns.pickle")
+        card_col= pd.read_pickle("streamlit_app/highcardinal_columns.pickle")
 
         def set_cat(x,col):
             if x in (card_col.loc[card_col["name"]==col,"reduced_values"].to_list()[0]):
@@ -82,10 +82,10 @@ class get_data():
 
         #prediction
 
-        scaler = pickle.load(open('neural_network(mae 9.1)_scaler.pkl', 'rb'))
+        scaler = pickle.load(open('streamlit_app/neural_network(mae 9.1)_scaler.pkl', 'rb'))
         X = scaler.transform(data.drop(['is_emri'],axis=1))
 
-        model =  pickle.load(open('neural_network(mae 9.1).pkl', 'rb'))
+        model =  pickle.load(open('streamlit_app/neural_network(mae 9.1).pkl', 'rb'))
 
         y_pred = model.predict(X).reshape(-1,)
 
