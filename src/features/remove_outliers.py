@@ -15,8 +15,48 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 warnings.filterwarnings("ignore")
+""" Explanation of the Code
+This code is importing several libraries and modules, 
+including glob, sklearn, xgboost, pandas, numpy, scipy 
+and optuna. It then sets some options for pandas to 
+display dataframes. 
+
+The code then uses the glob module to get a list of 
+files from a directory. It then reads in two pickle 
+files containing dataframes and removes any rows with
+missing values in the gun_sayisi_class column. 
+
+The code then creates a list of numerical columns 
+from the dataframe and creates a list of outlier 
+detection methods. It then defines a function that 
+takes in a dataframe and an outlier detection method
+as arguments and returns a series with True or False 
+values depending on whether each row is an outlier or not. 
+The code then loops through the list of outlier 
+detection methods and applies them to both dataframes, 
+creating new columns for each method with True or False 
+values depending on whether each row is an outlier or 
+not. 
+
+The code then defines another function that takes 
+in a dataframe as an argument and uses Random Forest 
+Regressor to fit the model on the dataframe while 
+calculating mean squared errors. The results are 
+returned as a dataframe. The code then applies this 
+function to both dataframes with outliers detected 
+by all methods included in the list. 
+
+Finally, the code defines another function that 
+takes in a dataframe as an argument and filters 
+it using Isolation Forest while dropping other 
+unnecessary columns. This filtered version of the 
+dataframes are saved as pickle files for future use.
+
 
 """
+
+
+"""Outlier Detection Methods
 from ChatGPT:
 
 Scikit-learn (sklearn) is a popular Python library for 
