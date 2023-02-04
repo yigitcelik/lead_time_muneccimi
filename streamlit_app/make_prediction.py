@@ -85,7 +85,11 @@ class get_data():
         scaler = pickle.load(open('neural_network(mae 9.1)_scaler.pkl', 'rb'))
         X = scaler.transform(data.drop(['is_emri'],axis=1))
 
+<<<<<<< HEAD
         model =  pickle.load(open('neural_network(mae 9.1).pkl', 'rb'))
+=======
+        model =  pickle.load(open('models/neural_network(mae 9.1).pkl', 'rb'))
+>>>>>>> a0e3ab7 (04022023)
 
         y_pred = model.predict(X).reshape(-1,)
 
