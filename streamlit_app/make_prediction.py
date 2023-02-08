@@ -59,7 +59,7 @@ class get_data():
             oe_temp = OneHotEncoder(handle_unknown='ignore',sparse=False)
             oe_temp.fit(array.reshape(-1,1))
             temp_ = oe_temp.transform(df[col].astype('int32').values.reshape(-1,1))
-            temp_ = pd.DataFrame(temp_,columns=oe_temp.get_feature_names())
+            temp_ = pd.DataFrame(temp_,columns=oe_temp.get_feature_names_out()) #get_feature_names
             temp_= temp_.add_prefix(col)
             df = pd.concat([df.reset_index(),temp_.reset_index()],axis=1)
             df = df.drop([col],axis=1)
