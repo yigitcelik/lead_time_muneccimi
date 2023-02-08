@@ -11,6 +11,7 @@ import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
+from pathlib import Path
 
 
 class get_data():
@@ -84,8 +85,8 @@ class get_data():
 
         scaler = pickle.load(open('neural_network(mae 9.1)_scaler.pkl', 'rb'))
         X = scaler.transform(data.drop(['is_emri'],axis=1))
-
-        model = keras.models.load_model('neural_network(mae 9.1)')
+        model_path = Path(__file__).parents[0]/"neural_network(mae 9.1)"
+        model = keras.models.load_model(model_path)
 
         #model =  pickle.load(open('neural_network(mae 9.1).pkl', 'rb'))
 
