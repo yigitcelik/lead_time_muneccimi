@@ -28,7 +28,8 @@ class get_data():
             pass
 
         #build features
-        card_col= pd.read_pickle("highcardinal_columns.pickle")
+        card_path= Path(__file__).parents[0]/"highcardinal_columns.pickle"
+        card_col= pd.read_pickle(card_path)
 
         def set_cat(x,col):
             if x in (card_col.loc[card_col["name"]==col,"reduced_values"].to_list()[0]):
