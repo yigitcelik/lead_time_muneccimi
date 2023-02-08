@@ -44,7 +44,7 @@ with tf.device('/cpu:0'):
     loss='mean_absolute_error')
 
     # Define the early stopping callback
-    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
 
     # Train the model
     epochs = 200
@@ -55,6 +55,10 @@ with tf.device('/cpu:0'):
 # Evaluate the model
 score = model.evaluate(X_test, y_test, batch_size=64)
 # save model
+
+model.save('../../models/neural_network(mae 9.1)')
+model = keras.models.load_model('../../models/neural_network(mae 9.1)')
+
 pickle.dump(model, open('../../models/neural_network(mae 9.1).pkl', 'wb'))
 
 pickled_model = pickle.load(open('../../models/neural_network(mae 9.1).pkl', 'rb'))
@@ -98,3 +102,5 @@ cm =confusion_matrix(y_true=plot_df["Gercek sınıf"].astype('str'),y_pred=plot_
 
 sns.heatmap(report_df.iloc[:, :-1], annot=True)
 plt.savefig("../../reports/figures/neural_network_classreport0-15-30.png")
+
+# %%
