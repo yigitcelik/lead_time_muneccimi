@@ -82,8 +82,8 @@ class get_data():
         data = one_encode('ISDT_Month',np.arange(1,13),data)
 
         #prediction
-
-        scaler = pickle.load(open('neural_network(mae 9.1)_scaler.pkl', 'rb'))
+        scaler_path= Path(__file__).parents[0]/"neural_network(mae 9.1)_scaler.pkl"
+        scaler = pickle.load(open(scaler_path, 'rb'))
         X = scaler.transform(data.drop(['is_emri'],axis=1))
         model_path = Path(__file__).parents[0]/"neural_network(mae 9.1)"
         model = keras.models.load_model(model_path)
