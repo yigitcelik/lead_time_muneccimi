@@ -12,7 +12,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
 from pathlib import Path
-
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 
 class get_data():
     def get_predict(df):
@@ -22,10 +24,10 @@ class get_data():
         cat_columns = [col for col in data[data.select_dtypes(['int','float']).columns].columns if data[col].nunique()<value]
         num_columns = [col for col in data[data.select_dtypes(['int','float']).columns].columns if col not in cat_columns]
         data[cat_columns] = data[cat_columns].astype('category')
-        try:
-            data = data.drop(['Plan Durumu','kaç üretim alanı ?'],axis=1)
-        except:
-            pass
+        # try:
+        #     data = data.drop(['Plan Durumu','kaç üretim alanı ?'],axis=1)
+        # except:
+        #     pass
 
         #build features
         card_path= Path(__file__).parents[0]/"highcardinal_columns.pickle"
@@ -81,12 +83,16 @@ class get_data():
         data = one_encode('Hesap Tayin Tipi',np.array([0,1]),data)
         data = one_encode('ISDT_Quarter',np.array([1,2,3,4]),data)
         data = one_encode('ISDT_Month',np.arange(1,13),data)
+        data = one_encode('Plan Durumu',np.array([5,6,7,8]),data)
 
         #prediction
-        scaler_path= Path(__file__).parents[0]/"neural_network(mae 9.1)_scaler.pkl"
+        scaler_path= Path(__file__).parents[0]/"neural_network(mae 7.99)_scaler.pkl"
         scaler = pickle.load(open(scaler_path, 'rb'))
-        X = scaler.transform(data.drop(['is_emri'],axis=1))
-        model_path = Path(__file__).parents[0]/"neural_network(mae 9.1)"
+ 
+        X = data.drop(['is_emri'],axis=1)
+        X = scaler.transform(X)
+
+        model_path = Path(__file__).parents[0]/"neural_network(mae 7.99)"
         model = keras.models.load_model(model_path)
 
         #model =  pickle.load(open('neural_network(mae 9.1).pkl', 'rb'))
@@ -99,4 +105,3 @@ class get_data():
         data.insert(0,'tahmini_lead_time(gun)' , col)
 
         return data
-        

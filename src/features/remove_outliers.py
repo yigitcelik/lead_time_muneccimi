@@ -11,6 +11,11 @@ from scipy import stats
 from sklearn.svm import OneClassSVM
 from sklearn.covariance import EllipticEnvelope
 import optuna
+import sys
+sys.path.insert(0, '/Users/yigitcelik/Desktop/github/lead_time_muneccimi/')
+from src.visualization.visualize import tell_data
+
+
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
@@ -131,7 +136,7 @@ def fit_score(df):
         y = df_filtered["gun_sayisi"] #target olarak y değişkenine atanır
         X = df_filtered.drop(["gun_sayisi_class","gun_sayisi"],axis=1) #targetler girdiden drop edilir.
         X = X.drop(methods,axis=1) #girdiden outlier method kolonları drop edilir.
-        cv_score = cross_val_score(RandomForestRegressor(),X=X,y=y,cv=5,scoring="neg_mean_squared_error",verbose=0)
+        cv_score = cross_val_score(RandomForestRegressor(),X=X,y=y,cv=5,scoring="neg_mean_absolute_error",verbose=0)
         test_results["method"].append(met)
         test_results["score"].append(np.abs(np.mean(cv_score)))
         test_results["size"].append(len(y))

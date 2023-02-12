@@ -4,7 +4,7 @@ setup(
     name='src',
     packages=find_packages(),
     version='0.1.0',
-    description='it takes production order details as input and try to predict the lead time  first product will be produced.',
+    description='it takes production order details as input and try to predict the lead time of the first product that will be produced.',
     author='Yigit Celik',
     license='',
 )

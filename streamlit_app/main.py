@@ -38,5 +38,3 @@ if st.button("Tahmin Yap"):
 
         
 
-
-

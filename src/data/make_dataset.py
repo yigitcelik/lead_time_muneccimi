@@ -44,21 +44,32 @@ class dataset:
 
 
 
-data,num_columns,cat_columns = dataset.df_dtype_creater(data_list[0],value=60)
+data,num_columns,cat_columns = dataset.df_dtype_creater('../../data/raw/model_input(ilk veri).xlsx',value=60)
 
 #data tipleri kontrol edilir yanlisliklar duzeltilir.
 
 #cat_columns = [cat_columns.remove(col) for col in ['kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı']]
-num_columns.extend(('kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı'))
-data[['kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı']]= data[['kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı']].astype('int')
+num_columns.extend(('kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı','Z4 bildirim sayısı'))
+data[['kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı','Z4 bildirim sayısı']]= data[['kac adimli?','kaç farklı iş yeri var?','kaç üretim alanı ?','ıskarta sayısı','Z4 bildirim sayısı']].astype('int')
 
 dataset.explore_df(data)
 
+data["Plan Durumu"]=data["Plan Durumu"].fillna(8)
+data.loc[((data["Plan Durumu"]==4) | (data["Plan Durumu"]==3)),"Plan Durumu"]=8
+data["Plan Durumu"] = data["Plan Durumu"].cat.remove_categories(3)
+data["Plan Durumu"] = data["Plan Durumu"].cat.remove_categories(4)
 
 #'Plan durumu' kolonu eksik veri iceriyor, 'kac uretim alani' kolonunda yanlis bilgiler mevcut bu sebeple bu kolonlar cikartilir
 
 
-data = data.drop(['Plan Durumu','kaç üretim alanı ?'],axis=1)
+#data = data.drop(['Plan Durumu','kaç üretim alanı ?'],axis=1)
+
+data = data.drop(['Plan Durumu'],axis=1)
+
+obj_cols = data.select_dtypes('object').columns
+for col in data[obj_cols]:
+    data.loc[data[col]=="Hata",col]=999
+data[obj_cols]=data[obj_cols].astype('category')
 
 #duzenlenen dataframe pickle olarak kaydedilir.
 data.to_pickle('../../data/interim/tumveri_transformed.pickle')

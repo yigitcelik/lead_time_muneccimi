@@ -121,5 +121,6 @@ data = one_encode('MİP sorumlusu_t',np.array([1,2]),data)
 data = one_encode('Hesap Tayin Tipi',np.array([0,1]),data)
 data = one_encode('ISDT_Quarter',np.array([1,2,3,4]),data)
 data = one_encode('ISDT_Month',np.arange(1,13),data)
+data = one_encode('Plan Durumu',np.array([5,6,7,8]),data)
 
 data.to_pickle('../../data/processed/data_processed_onehot_encoded.pickle')

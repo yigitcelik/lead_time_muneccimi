@@ -6,7 +6,6 @@ class create_sap_data():
         df_dict = {'is_emri':wo_list,
             'Hedeflenen Miktar': np.random.randint(1,101,len(wo_list)),
             'Hesap Tayin Tipi':np.random.randint(0,1,len(wo_list)),
-            'Plan Durumu' : np.random.randint(1,8,len(wo_list)),
             'Sipariş önceliği' : np.random.randint(0,1,len(wo_list)),
             'ISDT tarihinde eksiksiz mi ?' : np.random.randint(0,1,len(wo_list)),
             'kac adimli?' : np.random.randint(1,20,len(wo_list)),
@@ -25,6 +24,7 @@ class create_sap_data():
             'İlk İş Yeri_t' : np.random.randint(1,60,len(wo_list)),
             'ISDT_Quarter' : np.random.randint(1,4,len(wo_list)),
             'ISDT_Month' : np.random.randint(1,12,len(wo_list)),
+            'Plan Durumu' : np.random.randint(5,8,len(wo_list)),
         }
 
         return pd.DataFrame(df_dict)

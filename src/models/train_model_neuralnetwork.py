@@ -4,12 +4,16 @@ from tensorflow import keras
 import pandas as pd
 from sklearn.model_selection import train_test_split,cross_val_score,GridSearchCV,RandomizedSearchCV
 from sklearn.metrics import accuracy_score,classification_report,confusion_matrix,roc_auc_score,mean_squared_error,make_scorer,r2_score,mean_absolute_error,recall_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler,MinMaxScaler,QuantileTransformer
 from keras.callbacks import EarlyStopping
 import pickle
 import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 
 data =pd.read_pickle("../../data/processed/data_processed_onehot_encoded_wo_outliers_train-test.pickle")
 data_val =pd.read_pickle("../../data/processed/data_processed_onehot_encoded_wo_outliers_validation.pickle")
@@ -21,11 +25,11 @@ X = data.drop(["gun_sayisi"],axis=1)
 y_val = data_val["gun_sayisi"]
 X_val = data_val.drop(["gun_sayisi"],axis=1)
 
-scaler = StandardScaler()
+scaler = QuantileTransformer() #StandardScaler()
 X = scaler.fit_transform(X)
 X_val = scaler.transform(X_val)
 
-pickle.dump(scaler, open('../../models/neural_network(mae 9.1)_scaler.pkl', 'wb'))
+pickle.dump(scaler, open('../../models/neural_network(mae 7.99)_scaler.pkl', 'wb'))
 
 X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.25,random_state=42)
 
@@ -36,6 +40,7 @@ with tf.device('/cpu:0'):
     model = keras.Sequential([
         keras.layers.Dense(units=32, activation='relu', input_shape=(X_train.shape[1],)),
         keras.layers.Dense(units=64, activation='relu'),
+        keras.layers.Dense(units=64, activation='relu'),
         keras.layers.Dense(units=1)
     ])
 
@@ -44,7 +49,7 @@ with tf.device('/cpu:0'):
     loss='mean_absolute_error')
 
     # Define the early stopping callback
-    early_stopping = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=50, restore_best_weights=True)
 
     # Train the model
     epochs = 200
@@ -56,15 +61,12 @@ with tf.device('/cpu:0'):
 score = model.evaluate(X_test, y_test, batch_size=64)
 # save model
 
-model.save('../../models/neural_network(mae 9.1)')
-model = keras.models.load_model('../../models/neural_network(mae 9.1)')
+model.save('../../models/neural_network(mae 7.99)')
+model = keras.models.load_model('../../models/neural_network(mae 7.99)')
 
-pickle.dump(model, open('../../models/neural_network(mae 9.1).pkl', 'wb'))
 
-pickled_model = pickle.load(open('../../models/neural_network(mae 9.1).pkl', 'rb'))
-
-y_pred_val = pickled_model.predict(X_val).reshape(-1,)
-y_pred_test = pickled_model.predict(X_test).reshape(-1,)
+y_pred_val = model.predict(X_val).reshape(-1,)
+y_pred_test = model.predict(X_test).reshape(-1,)
 
 def reg_scatter(y_pred,y_test):
     acc_ind = np.abs(y_pred-y_test)<=10
