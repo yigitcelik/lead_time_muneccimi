@@ -64,7 +64,8 @@ data["Plan Durumu"] = data["Plan Durumu"].cat.remove_categories(4)
 
 #data = data.drop(['Plan Durumu','kaç üretim alanı ?'],axis=1)
 
-data = data.drop(['Plan Durumu'],axis=1)
+#data = data.drop(['kaç üretim alanı ?','PP02 adım var mı?'],axis=1)
+data = data.drop(['kaç üretim alanı ?','PP02 adım var mı?'],axis=1)
 
 obj_cols = data.select_dtypes('object').columns
 for col in data[obj_cols]:

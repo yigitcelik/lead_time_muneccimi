@@ -114,7 +114,7 @@ for col in high_card_cat['name'].values:
     data=one_encode(col,high_card_cat.loc[high_card_cat['name']==col,'reduced_values'].values[0].to_numpy(),data)
 
 data =one_encode('ISDT tarihinde eksiksiz mi ?',np.array([0,1]),data)
-data =one_encode('PP02 adım var mı?',np.array([0,1]),data)
+#data =one_encode('PP02 adım var mı?',np.array([0,1]),data)
 data = one_encode('Sipariş önceliği',np.array([0,1]),data)
 data = one_encode('Türü_t',np.array([1,2,3,4]),data)
 data = one_encode('MİP sorumlusu_t',np.array([1,2]),data)

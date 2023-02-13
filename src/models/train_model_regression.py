@@ -60,18 +60,18 @@ data2 =  pd.read_pickle('../../data/processed/data_processed_not_encoded_wo_outl
 data2 = data2.dropna()
 
 data1= data1.drop(['gun_sayisi_class'],axis=1)
-test1 = data1.sample(1000)
-data1 = data1[~data1.index.isin(test1.index)]
+# test1 = data1.sample(1000)
+# data1 = data1[~data1.index.isin(test1.index)]
 
-data1.to_pickle('../../data/processed/data_processed_onehot_encoded_wo_outliers_train-test.pickle')
-test1.to_pickle('../../data/processed/data_processed_onehot_encoded_wo_outliers_validation.pickle')
+# data1.to_pickle('../../data/processed/data_processed_onehot_encoded_wo_outliers_train-test.pickle')
+# test1.to_pickle('../../data/processed/data_processed_onehot_encoded_wo_outliers_validation.pickle')
 
 data2= data2.drop(['gun_sayisi_class'],axis=1)
-test2 = data2.sample(1000)
-data2 = data2[~data2.index.isin(test2.index)]
+# test2 = data2.sample(1000)
+# data2 = data2[~data2.index.isin(test2.index)]
 
-data2.to_pickle('../../data/processed/data_processed_not_encoded_wo_outliers_train-test.pickle')
-test2.to_pickle('../../data/processed/data_processed_not_encoded_wo_outliers_validation.pickle')
+# data2.to_pickle('../../data/processed/data_processed_not_encoded_wo_outliers_train-test.pickle')
+# test2.to_pickle('../../data/processed/data_processed_not_encoded_wo_outliers_validation.pickle')
 
 #what are the difference between quantiletransformer and minmaxscaler
 def first_training(df,target,scaler,cat):
@@ -80,8 +80,8 @@ def first_training(df,target,scaler,cat):
 
     if scaler:
         qs = QuantileTransformer()
-        X1[X1.select_dtypes(['int64','float64']).columns] = qs.fit_transform(X1.select_dtypes(['int64','float64']))  #sayisal degerler oranlanir
-
+        #X1[X1.select_dtypes(['int64','float64']).columns] = qs.fit_transform(X1.select_dtypes(['int64','float64']))  #sayisal degerler oranlanir
+        X1 = qs.fit_transform(X1)
 
     estimators = {
                 'SVR':SVR(),
@@ -149,8 +149,8 @@ X = data2.drop("gun_sayisi",axis=1)
 
 
 qs = QuantileTransformer()
-X[X.select_dtypes(['int64','float64']).columns] = qs.fit_transform(X.select_dtypes(['int64','float64']))
-
+#X[X.select_dtypes(['int64','float64']).columns] = qs.fit_transform(X.select_dtypes(['int64','float64']))
+X = qs.fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 def objective(trial):
@@ -196,7 +196,7 @@ print("Best hyperparameters:", best_params)
 print("Best score:", best_score)
 
 
-model =  SVR(**best_params)
+model =  SVR()#SVR(**best_params)
 model.fit(X_train,y_train)
 y_pred = model.predict(X_test)
 y_pred[y_pred<=0] = 1
@@ -204,17 +204,17 @@ mean_absolute_error(y_pred=y_pred,y_true=y_test)
 
 
 #validation data score 
-y_valid = test2["gun_sayisi"]
-X_valid = test2.drop(["gun_sayisi"],axis=1)
-X_valid[X_valid.select_dtypes(['int64','float64']).columns] = qs.transform(X_valid.select_dtypes(['int64','float64']))
-y_predv =model.predict(X_valid)
-y_predv[y_predv<=0] = 1
-mean_absolute_error(y_pred=y_predv,y_true=y_valid)
+# y_valid = test2["gun_sayisi"]
+# X_valid = test2.drop(["gun_sayisi"],axis=1)
+# X_valid[X_valid.select_dtypes(['int64','float64']).columns] = qs.transform(X_valid.select_dtypes(['int64','float64']))
+# y_predv =model.predict(X_valid)
+# y_predv[y_predv<=0] = 1
+# mean_absolute_error(y_pred=y_predv,y_true=y_valid)
 
 #validation data score with dummy regressor
-model_dummy = DummyRegressor(strategy='constant',constant=30)
-model_dummy.fit(X_train,y_train)
-mean_absolute_error(y_true=y_valid,y_pred=model_dummy.predict(X_valid))
+# model_dummy = DummyRegressor(strategy='constant',constant=30)
+# model_dummy.fit(X_train,y_train)
+# mean_absolute_error(y_true=y_valid,y_pred=model_dummy.predict(X_valid))
 
 def reg_scatter(y_pred,y_test):
     acc_ind = np.abs(y_pred-y_test)<=10
@@ -234,7 +234,7 @@ def reg_scatter(y_pred,y_test):
     return fig3
 
 
-reg_scatter(y_predv,y_valid).write_html("../../reports/figures/svr_val_data.html")
+#reg_scatter(y_predv,y_valid).write_html("../../reports/figures/svr_val_data.html")
 reg_scatter(y_pred,y_test).write_html("../../reports/figures/svr_traintest_data.html")
 
 
@@ -247,7 +247,7 @@ def class_accuracy(y_pred,y_test):
 
 
 
-plot_df = class_accuracy(y_predv,y_valid)
+plot_df = class_accuracy(y_pred,y_test)
 report = classification_report(y_true=plot_df["Gercek sınıf"],y_pred=plot_df["Tahmin sınıf"],output_dict=True)
 report_df = pd.DataFrame(report).transpose()
 cm =confusion_matrix(y_true=plot_df["Gercek sınıf"],y_pred=plot_df["Tahmin sınıf"],labels=['erken','orta','gec'])
@@ -255,4 +255,4 @@ cm =confusion_matrix(y_true=plot_df["Gercek sınıf"],y_pred=plot_df["Tahmin sı
 sns.heatmap(report_df.iloc[:, :-1], annot=True)
 plt.savefig("../../reports/figures/svr_classreport0-15-30.png")
 
-pickle.dump(model, open('../../models/svr(mae 9.16).pkl', 'wb'))
+pickle.dump(model, open('../../models/svr(mae 8.05).pkl', 'wb'))

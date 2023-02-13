@@ -76,7 +76,7 @@ class get_data():
             data=one_encode(col,card_col.loc[card_col['name']==col,'reduced_values'].values[0].to_numpy(),data)
 
         data =one_encode('ISDT tarihinde eksiksiz mi ?',np.array([0,1]),data)
-        data =one_encode('PP02 adım var mı?',np.array([0,1]),data)
+        #data =one_encode('PP02 adım var mı?',np.array([0,1]),data)
         data = one_encode('Sipariş önceliği',np.array([0,1]),data)
         data = one_encode('Türü_t',np.array([1,2,3,4]),data)
         data = one_encode('MİP sorumlusu_t',np.array([1,2]),data)
@@ -86,13 +86,13 @@ class get_data():
         data = one_encode('Plan Durumu',np.array([5,6,7,8]),data)
 
         #prediction
-        scaler_path= Path(__file__).parents[0]/"neural_network(mae 7.99)_scaler.pkl"
+        scaler_path= Path(__file__).parents[0]/"neural_network(mae 7.77)_scaler.pkl"
         scaler = pickle.load(open(scaler_path, 'rb'))
  
         X = data.drop(['is_emri'],axis=1)
         X = scaler.transform(X)
 
-        model_path = Path(__file__).parents[0]/"neural_network(mae 7.99)"
+        model_path = Path(__file__).parents[0]/"neural_network(mae 7.77)"
         model = keras.models.load_model(model_path)
 
         #model =  pickle.load(open('neural_network(mae 9.1).pkl', 'rb'))
