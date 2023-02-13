@@ -3,6 +3,8 @@ import pandas as pd
 from create_dummy_sap_data import create_sap_data
 from make_prediction import get_data
 import time
+import io
+
 
 st.set_page_config(page_title="Prediction Model", page_icon=":chart_with_upwards_trend:", layout="wide")
 
@@ -28,10 +30,28 @@ if st.button("Tahmin Yap"):
     elif uploaded_file is not None:
         wo_list = wo_input.split(' ')
         df = pd.read_excel(uploaded_file)
+
         with st.spinner("Tahmin yapiliyor lutfen bekleyiniz"):
-            time.sleep(2)
+            df_new = get_data.get_predict(df)
+            st.write(df_new)
+                
         col1.success('Tahminleme tamamlandi')
-        st.write(get_data.get_predict(df))
+
+        # Create a Pandas Excel writer using XlsxWriter as the engine.
+        buffer = io.BytesIO()
+        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+            # Write each dataframe to a different worksheet.
+            df_new.to_excel(writer, sheet_name='Sheet1',index=False)
+
+            # Close the Pandas Excel writer and output the Excel file to the buffer
+            writer.save()
+
+            st.download_button(
+                label="Tahmin Sonucunu indir",
+                data=buffer,
+                file_name="tahminler.xlsx",
+                mime="application/vnd.ms-excel"
+    )
     else:
         col1.error("Girdi verilmedi !!!")
         
