@@ -6,6 +6,7 @@ __pycache__/
 *.so
 
 Lead_time_Muneccim.app
+/Lead_time_Muneccim.app
 # Distribution / packaging
 .Python
 env/
