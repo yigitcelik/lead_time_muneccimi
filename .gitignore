@@ -5,6 +5,7 @@ __pycache__/
 # C extensions
 *.so
 
+Lead_time_Muneccim.app
 # Distribution / packaging
 .Python
 env/
