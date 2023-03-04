@@ -1,7 +1,7 @@
 Lead Time Muneccimi
 ==============================
 
-it takes production order details as input and try to predict the lead time of the first product that will be produced.
+it takes the production orders' details as an input and try to predict the lead time of the first product that will be produced.
 
 Project Organization
 ------------
